@@ -18,6 +18,17 @@ class EloquentCase
 
     private string $as;
 
+    public static function mapValues(string $column, array $values): static
+    {
+        $builder = new static();
+
+        foreach ($values as $case => $then) {
+            $builder->when($column, '=', $case, $then);
+        }
+
+        return $builder;
+    }
+
     public function whenRaw(string $raw, mixed $then): static
     {
         $this->when[] = sprintf("WHEN %s THEN ?", $raw);

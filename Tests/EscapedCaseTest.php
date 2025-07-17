@@ -125,6 +125,20 @@ class EscapedCaseTest extends TestCase
             [MyEnum::First->value, MyEnum::Second->value],
         ], $case->toArgs());
     }
+
+    #[Test]
+    public function it_can_batch_map_values()
+    {
+        $case = EloquentCase::mapValues('my_column', [
+            'one' => MyEnum::First,
+            'two' => MyEnum::Second,
+        ]);
+
+        $this->assertEquals([
+            'CASE WHEN `my_column` = ? THEN ? WHEN `my_column` = ? THEN ? END',
+            ['one', MyEnum::First->value, 'two', MyEnum::Second->value],
+        ], $case->toArgs());
+    }
 }
 
 enum MyEnum: string
