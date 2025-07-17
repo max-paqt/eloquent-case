@@ -139,6 +139,24 @@ class EscapedCaseTest extends TestCase
             ['one', MyEnum::First->value, 'two', MyEnum::Second->value],
         ], $case->toArgs());
     }
+
+    #[Test]
+    public function it_can_output_raw()
+    {
+        $case = (new EloquentCase())
+            ->when('my_column', '=', MyEnum::First, "sec'ond")
+            ->else(MyEnum::Third);
+
+        $this->assertEquals(
+            'CASE WHEN `my_column` = \'first\' THEN \'sec\\\'ond\' ELSE \'third\' END',
+            $case->raw(true)
+        );
+
+        $this->assertEquals(
+            'CASE WHEN `my_column` = \'first\' THEN \'\' ELSE \'third\' END',
+            $case->raw(false)
+        );
+    }
 }
 
 enum MyEnum: string

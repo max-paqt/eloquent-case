@@ -83,4 +83,27 @@ class EloquentCase
 
         return [$statement, $bindings];
     }
+
+    public function raw(bool $allowStrings = false): string
+    {
+        [$statement, $bindings] = $this->toArgs();
+
+        foreach ($bindings as $binding) {
+            if (is_null($binding)) {
+                $value = 'NULL';
+            } elseif (is_string($binding)) {
+                $value = $allowStrings ? "'" . addslashes($binding) . "'" : "''";
+            } elseif (is_bool($binding)) {
+                $value = $binding ? '1' : '0';
+            } elseif (is_numeric($binding)) {
+                $value = $binding;
+            } else {
+                $value = "'" . str_replace("'", "''", (string)$binding) . "'";
+            }
+
+            $statement = preg_replace('/\?/', $value, $statement, 1);
+        }
+
+        return $statement;
+    }
 }
