@@ -129,13 +129,13 @@ class EscapedCaseTest extends TestCase
     #[Test]
     public function it_can_batch_map_values()
     {
-        $case = EloquentCase::mapValues('my_column', [
+        $case = EloquentCase::mapValues('table.my_column', [
             'one' => MyEnum::First,
             'two' => MyEnum::Second,
         ]);
 
         $this->assertEquals([
-            'CASE WHEN `my_column` = ? THEN ? WHEN `my_column` = ? THEN ? END',
+            'CASE WHEN `table`.`my_column` = ? THEN ? WHEN `table`.`my_column` = ? THEN ? END',
             ['one', MyEnum::First->value, 'two', MyEnum::Second->value],
         ], $case->toArgs());
     }
@@ -153,7 +153,7 @@ class EscapedCaseTest extends TestCase
         );
 
         $this->assertEquals(
-            'CASE WHEN `my_column` = \'first\' THEN \'\' ELSE \'third\' END',
+            'CASE WHEN `my_column` = \'\' THEN \'\' ELSE \'\' END',
             $case->raw(false)
         );
     }

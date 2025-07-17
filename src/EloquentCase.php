@@ -39,7 +39,7 @@ class EloquentCase
 
     public function when(string $column, string $operator, mixed $value, mixed $then): static
     {
-        $this->when[] = sprintf('WHEN `%s` %s ? THEN ?', $column, $operator);
+        $this->when[] = sprintf('WHEN %s %s ? THEN ?', $this->getColumn($column), $operator);
         $this->bindings[] = $this->getValue($value);
         $this->bindings[] = $this->getValue($then);
 
@@ -49,6 +49,14 @@ class EloquentCase
     private function getValue(mixed $value): mixed
     {
         return $value instanceof BackedEnum ? $value->value : $value;
+    }
+
+    private function getColumn(string $column): string
+    {
+        $split = explode('.', $column);
+        $escaped = array_map(fn (string $chunk) => "`$chunk`", $split);
+
+        return implode('.', $escaped);
     }
 
     public function else(mixed $then): static
