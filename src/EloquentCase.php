@@ -96,9 +96,9 @@ class EloquentCase
             } elseif (is_bool($binding)) {
                 $value = $binding ? '1' : '0';
             } elseif (is_numeric($binding)) {
-                $value = $binding;
+                $value = (string) $binding;
             } else {
-                $value = "'" . str_replace("'", "''", (string)$binding) . "'";
+                $value = $allowStrings ? "'" . str_replace("'", "''", (string) $binding) . "'" : "''";
             }
 
             $statement = preg_replace('/\?/', $value, $statement, 1);
