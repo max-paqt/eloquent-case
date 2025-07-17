@@ -64,6 +64,8 @@ class EloquentCase
             $bindings[] = $this->getValue($this->else);
         }
 
+        $statement .= ' END';
+
         if (isset($this->as)) {
             $statement .= sprintf(' AS `%s`', $this->as);
         }

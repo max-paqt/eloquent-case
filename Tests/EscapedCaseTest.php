@@ -18,7 +18,7 @@ class EscapedCaseTest extends TestCase
             ->else('minor');
 
         $this->assertEquals([
-            'CASE WHEN `age` > ? THEN ? ELSE ?',
+            'CASE WHEN `age` > ? THEN ? ELSE ? END',
             [18, 'adult', 'minor'],
         ], $case->toArgs());
     }
@@ -32,7 +32,7 @@ class EscapedCaseTest extends TestCase
             ->as('age_group');
 
         $this->assertEquals([
-            'CASE WHEN `age` > ? THEN ? ELSE ? AS `age_group`',
+            'CASE WHEN `age` > ? THEN ? ELSE ? END AS `age_group`',
             [18, 'adult', 'minor'],
         ], $case->toArgs());
     }
@@ -52,7 +52,7 @@ class EscapedCaseTest extends TestCase
             . 'WHEN `age` > ? THEN ? '
             . 'WHEN `age` > ? THEN ? '
             . 'WHEN `age` > ? THEN ? '
-            . 'ELSE ?',
+            . 'ELSE ? END',
             ['m', 'señor', 65, 'senior', 40, 'adult', 18, 'young adult', 'minor'],
         ], $case->toArgs());
     }
@@ -64,7 +64,7 @@ class EscapedCaseTest extends TestCase
             ->when('age', '>', 18, 'adult');
 
         $this->assertEquals([
-            'CASE WHEN `age` > ? THEN ?',
+            'CASE WHEN `age` > ? THEN ? END',
             [18, 'adult'],
         ], $case->toArgs());
     }
@@ -82,7 +82,7 @@ class EscapedCaseTest extends TestCase
             'CASE WHEN `gender` = ? THEN ? '
             . 'WHEN `age` > ? THEN ? '
             . 'WHEN `age` > ? THEN ? '
-            . 'WHEN `age` > ? THEN ?',
+            . 'WHEN `age` > ? THEN ? END',
             ['m', 'señor', 65, 'senior', 40, 'adult', 18, 'young adult'],
         ], $case->toArgs());
     }
@@ -95,7 +95,7 @@ class EscapedCaseTest extends TestCase
             ->else(MyEnum::Third);
 
         $this->assertEquals([
-            'CASE WHEN `my_column` = ? THEN ? ELSE ?',
+            'CASE WHEN `my_column` = ? THEN ? ELSE ? END',
             [MyEnum::First->value, MyEnum::Second->value, MyEnum::Third->value],
         ], $case->toArgs());
     }
@@ -108,7 +108,7 @@ class EscapedCaseTest extends TestCase
             ->else('else');
 
         $this->assertEquals([
-            'CASE WHEN my risky wen THEN ? ELSE ?',
+            'CASE WHEN my risky wen THEN ? ELSE ? END',
             ['value', 'else'],
         ], $case->toArgs());
     }
@@ -121,7 +121,7 @@ class EscapedCaseTest extends TestCase
             ->else(MyEnum::Second);
 
         $this->assertEquals([
-            'CASE WHEN my risky wen THEN ? ELSE ?',
+            'CASE WHEN my risky wen THEN ? ELSE ? END',
             [MyEnum::First->value, MyEnum::Second->value],
         ], $case->toArgs());
     }
