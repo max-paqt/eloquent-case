@@ -1,0 +1,20 @@
+{
+    "name": "max.stekelenburg/eloquent-case",
+    "description": "Eloquent Case bindings",
+    "type": "library",
+    "require-dev": {
+        "phpunit/phpunit": "^11.5"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Rxak\\EloquentCase\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\Rxak\\EloquentCase\\": "src/"
+        }
+    },
+    "require": {}
+}
